@@ -10,8 +10,10 @@ import java.util.Scanner;
 import java.util.prefs.Preferences;
 
 import app.address.model.Data;
+import app.address.model.Peptide;
 import app.address.model.Protein;
 import app.address.view.AppOverviewController;
+import app.address.view.FileReminderDialogController;
 import app.address.view.RootLayoutController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -21,17 +23,20 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class MainApp extends Application {
+public class MainApp extends Application
+{
 
-    private Stage primaryStage;
+    public boolean fileOpened = false;
+    public Stage primaryStage;
     private BorderPane rootLayout;
 
     public ObservableList<Data> tableData = FXCollections.observableArrayList();
 
     public ArrayList<Protein> proteinList = new ArrayList<>();
-    public HashMap<Protein, ArrayList<String>> matches = new HashMap<Protein, ArrayList<String>>();
+    public HashMap<Peptide, ArrayList<Integer>> matches = new HashMap<Peptide, ArrayList<Integer>>();
 
     public MainApp()
     {
@@ -128,6 +133,39 @@ public class MainApp extends Application {
 
 
 
+    public boolean showFileReminderDialog()
+    {
+        try {
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/FileReminderDialog.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("File Error");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Set the person into the controller.
+            FileReminderDialogController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+
+            return controller.isOkClicked();
+
+        }
+
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 
     /**
@@ -213,6 +251,8 @@ public class MainApp extends Application {
         }
         // Save the file path to the registry.
         setProteinFilePath(inFile);
+
+        System.out.println("UPLOADED");
     }
 
 
@@ -223,8 +263,9 @@ public class MainApp extends Application {
      * Saves the current person data to the specified file.
      *
      * @param csv
+     * @param inMap
      */
-    public void savePersonDataToFile(File csv, HashMap<Protein, ArrayList<String>> inMap)
+    public void savePersonDataToFile(File csv, HashMap<Peptide, ArrayList<Integer>> inMap)
     {
         try {
 
@@ -238,15 +279,15 @@ public class MainApp extends Application {
             csvWriter.append("BEGINNING INDEX").append(',');
             csvWriter.append("END INDEX").append('\n');
 
-            for (Protein p : inMap.keySet())
+            for (Peptide p : inMap.keySet())
             {
-                csvWriter.append(p.getProtein()).append(',');
+                csvWriter.append(p.getPeptide()).append(',');
 
-                ArrayList<String> list = inMap.get(p);
+                ArrayList<Integer> list = inMap.get(p);
 
-                for (String s : list)
+                for (Integer s : list)
                 {
-                    csvWriter.append(s).append(',');
+                    csvWriter.append(Character.highSurrogate(s)).append(',');
                 }
 
                 csvWriter.append('\n');

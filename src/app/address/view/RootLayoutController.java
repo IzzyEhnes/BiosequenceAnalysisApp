@@ -8,8 +8,10 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 
+
 public class RootLayoutController
 {
+
     // Reference to the main application
     private MainApp mainApp;
 
@@ -23,11 +25,13 @@ public class RootLayoutController
     }
 
 
+
     /**
      * Opens a FileChooser to let the user select an address book to load.
      */
     @FXML
-    private void handleOpen() {
+    public void handleOpen()
+    {
         FileChooser fileChooser = new FileChooser();
 
         // Set extension filter
@@ -38,9 +42,12 @@ public class RootLayoutController
         // Show open file dialog
         File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
 
-        if (file != null) {
+        if (file != null)
+        {
             mainApp.loadProteinDataFromFile(file);
         }
+
+        mainApp.fileOpened = true;
     }
 
 

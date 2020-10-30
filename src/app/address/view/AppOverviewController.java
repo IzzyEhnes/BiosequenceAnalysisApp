@@ -3,17 +3,24 @@ package app.address.view;
 import app.address.model.Peptide;
 import app.address.model.Protein;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import app.address.MainApp;
 import app.address.model.Data;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -23,18 +30,15 @@ public class AppOverviewController
     private TableView<Data> dataTable;
 
     @FXML
-    private TableColumn<Data, TextFlow> proteinColumn;
+    private TableColumn<Data, TextFlow> foundPeptideColumn;
     @FXML
-    private TableColumn<Data, String> peptideColumn;
+    private TableColumn<Data, String> targetPeptideColumn;
     @FXML
-    private TableColumn<Data, String> rowColumn;
+    private TableColumn<Data, Integer> scoreColumn;
     @FXML
-    private TableColumn<Data, String> begIndexColumn;
+    private TableColumn<Data, Integer> rowColumn;
     @FXML
-    private TableColumn<Data, String> endIndexColumn;
-    @FXML
-    private TableColumn<Data, String> similarityColumn;
-
+    private TableColumn<Data, Integer> peptideNumColumn;
 
     @FXML
     private TextField peptideField;
@@ -59,14 +63,19 @@ public class AppOverviewController
      * after the fxml file has been loaded.
      */
     @FXML
-    private void initialize() {
+    private void initialize()
+    {
+
+        scoreColumn.setSortType(TableColumn.SortType.ASCENDING);
+        dataTable.getSortOrder().add(scoreColumn);
+        dataTable.sort();
+
         // Initialize the data table with the five columns.
-        proteinColumn.setCellValueFactory(cellData -> cellData.getValue().proteinProperty());
-        peptideColumn.setCellValueFactory(cellData -> cellData.getValue().peptideProperty());
-        rowColumn.setCellValueFactory(cellData -> cellData.getValue().rowProperty());
-        begIndexColumn.setCellValueFactory(cellData -> cellData.getValue().begIndexProperty());
-        endIndexColumn.setCellValueFactory(cellData -> cellData.getValue().endIndexProperty());
-        similarityColumn.setCellValueFactory(cellData -> cellData.getValue().similarityProperty());
+        foundPeptideColumn.setCellValueFactory(cellData -> cellData.getValue().foundPeptideProperty());
+        targetPeptideColumn.setCellValueFactory(cellData -> cellData.getValue().peptideProperty());
+        scoreColumn.setCellValueFactory(cellData -> cellData.getValue().scoreProperty().asObject());
+        rowColumn.setCellValueFactory(cellData -> cellData.getValue().rowProperty().asObject());
+        peptideNumColumn.setCellValueFactory(cellData -> cellData.getValue().peptideNumProperty().asObject());
     }
 
 
@@ -86,63 +95,42 @@ public class AppOverviewController
     @FXML
     private void handleSearch()
     {
-        mainApp.tableData.clear();
-
-        System.out.println("SEARCHING...");
-
-        Peptide targetPeptide = new Peptide(peptideField.getText());
-
-        mainApp.matches = targetPeptide.findPotentialMatches(mainApp.getProteinList());
-
-        for (Protein p : mainApp.matches.keySet())
+        if (!mainApp.fileOpened)
         {
-            ArrayList<String> list = mainApp.matches.get(p);
-
-            Text a = new Text("Izzy");
-            Text b = new Text("Seamus");
-
-            a.setFill(Color.BLUE);
-            b.setFill(Color.GREEN);
-
-            TextFlow c = new TextFlow(a,b);
-
-
-            c.setPrefHeight(c.prefHeight(proteinColumn.getWidth()));
-
-
-            /*
-            Text protein = new Text();
-            Text temp = new Text();
-
-            for (int i = 0; i < p.getLength(); i++)
-            {
-                if (i < Integer.valueOf(list.get(2)) || i > Integer.valueOf(list.get(3)))
-                {
-                    protein.setText(protein.getText() + String.valueOf(p.toString().charAt(i)));
-                }
-
-
-                else if (i > Integer.valueOf(list.get(2)) && i < Integer.valueOf(list.get(3)))
-                {
-                    temp.setText(String.valueOf(p.toString().charAt(i)));
-
-                    temp.setFill(Color.RED);
-
-                    protein.setText(protein.getText() + temp);
-                }
-
-            }
-
-             */
-
-
-            mainApp.tableData.add(new Data(c, targetPeptide.getPeptide(), list.get(1), list.get(2), list.get(3), list.get(4)));
+            boolean okClicked = mainApp.showFileReminderDialog();
         }
 
-        System.out.println("END SEARCH");
+        else
+        {
+            mainApp.tableData.clear();
 
+            System.out.println("SEARCHING...");
 
-        searchClicked = true;
+            Peptide targetPeptide = new Peptide(peptideField.getText());
+
+            mainApp.matches = targetPeptide.findPotentialMatches(mainApp.getProteinList());
+
+            for (Peptide p : mainApp.matches.keySet())
+            {
+                ArrayList<Integer> list = mainApp.matches.get(p);
+
+                String LCS = p.getLongestCommonSubsequence(targetPeptide, p);
+
+                TextFlow foundPeptide = new TextFlow();
+                foundPeptide = p.colorCode(p, LCS);
+
+                foundPeptide.setPrefHeight(foundPeptide.prefHeight(foundPeptideColumn.getWidth()));
+
+                int score = p.getScore(LCS);
+
+                if (score >= 2)
+                {
+                    mainApp.tableData.add(new Data(foundPeptide, targetPeptide.getPeptide(), list.get(0), list.get(1), list.get(2)));
+                }
+            }
+
+            System.out.println("END SEARCH");
+        }
     }
 
 

@@ -2,10 +2,7 @@ package app.address.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -13,122 +10,103 @@ import javax.swing.*;
 
 public class Data
 {
-    private final ObjectProperty<TextFlow> protein;
-    private final StringProperty peptide;
-    private final StringProperty row;
-    private final StringProperty begIndex;
-    private final StringProperty endIndex;
-    private final StringProperty similarity;
+    private final ObjectProperty<TextFlow> foundPeptide;
+    private final StringProperty targetPeptide;
+    private final IntegerProperty score;
+    private final IntegerProperty row;
+    private final IntegerProperty peptideNum;
 
-    public Data(TextFlow inProtein, String inPeptide, String inRow, String inBegIndex, String inEndIndex, String inSimilarity)
+    public Data(TextFlow inFoundPeptide, String inTargetPeptide, Integer inScore, Integer inRow, Integer inPeptideNum)
     {
-        this.protein = new SimpleObjectProperty<TextFlow>(inProtein);
-        this.peptide = new SimpleStringProperty(inPeptide);
-        this.row = new SimpleStringProperty(inRow);
-        this.begIndex = new SimpleStringProperty(inBegIndex);
-        this.endIndex = new SimpleStringProperty(inEndIndex);
-        this.similarity = new SimpleStringProperty(inSimilarity);
+        this.foundPeptide = new SimpleObjectProperty<TextFlow>(inFoundPeptide);
+        this.targetPeptide = new SimpleStringProperty(inTargetPeptide);
+        this.score = new SimpleIntegerProperty(inScore);
+        this.row = new SimpleIntegerProperty(inRow);
+        this.peptideNum = new SimpleIntegerProperty(inPeptideNum);
     }
 
 
 
-    public TextFlow getProtein()
+    public TextFlow getFoundPeptide()
     {
-        return protein.get();
+        return foundPeptide.get();
     }
 
-    public void setProtein(TextFlow inProtein)
+    public void setFoundPeptide(TextFlow inProtein)
     {
-        this.protein.set(inProtein);
+        this.foundPeptide.set(inProtein);
     }
 
-    public ObjectProperty<TextFlow> proteinProperty()
+    public ObjectProperty<TextFlow> foundPeptideProperty()
     {
-        return protein;
+        return foundPeptide;
     }
 
 
 
     public String getPeptide()
     {
-        return peptide.get();
+        return targetPeptide.get();
     }
 
     public void setPeptide(String inPeptide)
     {
-        this.peptide.set(inPeptide);
+        this.targetPeptide.set(inPeptide);
     }
 
     public StringProperty peptideProperty()
     {
-        return peptide;
+        return targetPeptide;
     }
 
 
 
-    public String getRow()
+    public Integer getScore()
+    {
+        return score.get();
+    }
+
+    public void setScore(Integer inScore)
+    {
+        this.row.set(inScore);
+    }
+
+    public IntegerProperty scoreProperty()
+    {
+        return score;
+    }
+
+
+
+    public Integer getRow()
     {
         return row.get();
     }
 
-    public void setRow(String inRow)
+    public void setRow(Integer inRow)
     {
         this.row.set(inRow);
     }
 
-    public StringProperty rowProperty()
+    public IntegerProperty rowProperty()
     {
         return row;
     }
 
 
 
-    public String getBegIndex()
+    public Integer getPeptideNum()
     {
-        return begIndex.get();
+        return peptideNum.get();
     }
 
-    public void setBegIndex(String inBegIndex)
+    public void setSimilarity(Integer inPeptideNum)
     {
-        this.begIndex.set(inBegIndex);
+        this.peptideNum.set(inPeptideNum);
     }
 
-    public StringProperty begIndexProperty()
+    public IntegerProperty peptideNumProperty()
     {
-        return begIndex;
-    }
-
-
-
-    public String getEndIndex()
-    {
-        return endIndex.get();
-    }
-
-    public void setEndIndex(String inEndIndex)
-    {
-        this.endIndex.set(inEndIndex);
-    }
-
-    public StringProperty endIndexProperty()
-    {
-        return endIndex;
-    }
-
-
-
-    public String getSimilarity()
-    {
-        return similarity.get();
-    }
-
-    public void setSimilarity(String inSimilarity)
-    {
-        this.endIndex.set(inSimilarity);
-    }
-
-    public StringProperty similarityProperty()
-    {
-        return similarity;
+        return peptideNum;
     }
 }
