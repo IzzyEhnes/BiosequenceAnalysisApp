@@ -13,7 +13,7 @@
         <columns>
           <TableColumn fx:id="foundPeptideColumn" maxWidth="-1.0" minWidth="275.0" prefWidth="275.0" text="Found Peptide" />
           <TableColumn fx:id="targetPeptideColumn" maxWidth="-1.0" minWidth="275.0" prefWidth="275.0" text="Target Peptide" />
-            <TableColumn fx:id="scoreColumn" maxWidth="-1.0" minWidth="150.0" prefWidth="150.0" text="Score" />
+            <TableColumn fx:id="scoreColumn" maxWidth="-1.0" minWidth="150.0" prefWidth="150.0" sortType="DESCENDING" text="Score" />
             <TableColumn fx:id="rowColumn" maxWidth="-1.0" minWidth="150.0" prefWidth="150.0" text="Row" />
             <TableColumn fx:id="peptideNumColumn" maxWidth="-1.0" minWidth="150.0" prefWidth="150.0" text="Peptide #" />
         </columns>

@@ -2,6 +2,10 @@ package app.address.view;
 
 import app.address.model.Peptide;
 import app.address.model.Protein;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -55,8 +59,11 @@ public class AppOverviewController
      * The constructor.
      * The constructor is called before the initialize() method.
      */
-    public AppOverviewController() {
+    public AppOverviewController()
+    {
     }
+
+
 
     /**
      * Initializes the controller class. This method is automatically called
@@ -65,11 +72,6 @@ public class AppOverviewController
     @FXML
     private void initialize()
     {
-
-        scoreColumn.setSortType(TableColumn.SortType.ASCENDING);
-        dataTable.getSortOrder().add(scoreColumn);
-        dataTable.sort();
-
         // Initialize the data table with the five columns.
         foundPeptideColumn.setCellValueFactory(cellData -> cellData.getValue().foundPeptideProperty());
         targetPeptideColumn.setCellValueFactory(cellData -> cellData.getValue().peptideProperty());

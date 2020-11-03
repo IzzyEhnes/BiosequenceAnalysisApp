@@ -1,19 +1,14 @@
 package app.address.view;
 
-import app.address.MainApp;
 import javafx.fxml.FXML;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
+
 
 public class FileReminderDialogController
 {
     private Stage dialogStage;
     private boolean okClicked = false;
-
-    // Reference to the main application.
-    private MainApp mainApp;
 
 
 
