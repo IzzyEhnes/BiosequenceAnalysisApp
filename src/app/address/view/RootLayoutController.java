@@ -2,10 +2,7 @@ package app.address.view;
 
 import app.address.MainApp;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
-
 import java.io.File;
 
 
@@ -15,12 +12,15 @@ public class RootLayoutController
     // Reference to the main application
     private MainApp mainApp;
 
+
+
     /**
      * Is called by the main application to give a reference back to itself.
      *
      * @param mainApp
      */
-    public void setMainApp(MainApp mainApp) {
+    public void setMainApp(MainApp mainApp)
+    {
         this.mainApp = mainApp;
     }
 
@@ -52,6 +52,9 @@ public class RootLayoutController
 
 
 
+    /**
+     * Opens a FileChooser to let the user pick a file to save the data to.
+     */
     @FXML
     private void handleSaveAs()
     {
@@ -65,9 +68,11 @@ public class RootLayoutController
         // Show save file dialog
         File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
 
-        if (file != null) {
+        if (file != null)
+        {
             // Make sure it has the correct extension
-            if (!file.getPath().endsWith(".csv")) {
+            if (!file.getPath().endsWith(".csv"))
+            {
                 file = new File(file.getPath() + ".csv");
             }
 
@@ -77,7 +82,9 @@ public class RootLayoutController
 
 
 
-
+    /**
+     * Saves the data and exits the application.
+     */
     @FXML
     private void handleSaveAndExit()
     {
