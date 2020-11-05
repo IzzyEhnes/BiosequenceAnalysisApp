@@ -1,14 +1,12 @@
 package app.address;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.prefs.Preferences;
-
 import app.address.model.Data;
 import app.address.model.Peptide;
 import app.address.model.Protein;
@@ -21,44 +19,67 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+
+
 public class MainApp extends Application
 {
-
     public boolean fileOpened = false;
     public Stage primaryStage;
     private BorderPane rootLayout;
 
     public ObservableList<Data> tableData = FXCollections.observableArrayList();
-
     public ArrayList<Protein> proteinList = new ArrayList<>();
     public HashMap<Peptide, ArrayList<Integer>> matches = new HashMap<Peptide, ArrayList<Integer>>();
 
+
+
+    /**
+     * The default constructor.
+     */
     public MainApp()
     {
 
     }
 
 
+
+    /**
+     * The getter for tableData.
+     *
+     * @return tableData    The ObservableList that contains row and column data
+     */
     public ObservableList<Data> getData()
     {
         return tableData;
     }
 
 
+
+    /**
+     * The getter for proteinList.
+     *
+     * @return proteinList    An ArrayList of type Protein that contains all of the Proteins found in the uploaded CSV
+     */
     public ArrayList<Protein> getProteinList()
     {
         return proteinList;
     }
 
 
+
+    /**
+     * Sets the primary stage and starts the application.
+     *
+     * @param primaryStage    The primary stage of the application
+     */
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage)
+    {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("BiosequenceAnalysisApp");
 
@@ -67,11 +88,15 @@ public class MainApp extends Application
         showAppOverview();
     }
 
+
+
     /**
      * Initializes the root layout.
      */
-    public void initRootLayout() {
-        try {
+    public void initRootLayout()
+    {
+        try
+        {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/RootLayout.fxml"));
@@ -94,19 +119,21 @@ public class MainApp extends Application
         }
     }
 
+
+
     /**
-     * Shows the person overview inside the root layout.
+     * Shows the app overview inside the root layout.
      */
     public void showAppOverview()
     {
         try
         {
-            // Load person overview.
+            // Load app overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/AppOverview.fxml"));
             AnchorPane personOverview = (AnchorPane) loader.load();
 
-            // Set person overview into the center of root layout.
+            // Set app overview into the center of root layout.
             rootLayout.setCenter(personOverview);
 
             // Give the controller access to the main app.
@@ -120,23 +147,42 @@ public class MainApp extends Application
         }
     }
 
+
+
     /**
      * Returns the main stage.
-     * @return
+     *
+     * @return primaryStage    The main stage
      */
-    public Stage getPrimaryStage() {
+    public Stage getPrimaryStage()
+    {
         return primaryStage;
     }
 
-    public static void main(String[] args) {
+
+
+    /**
+     * The main method.
+     *
+     * @param args    Command line argument(s)
+     */
+    public static void main(String[] args)
+    {
         launch(args);
     }
 
 
 
+    /**
+     * This method displays a dialog window alerting the user that they've attempted to perform a search without first
+     * uploading a data file and that their search has failed.
+     *
+     * @return true if the the dialog is showing and false otherwise
+     */
     public boolean showFileReminderDialog()
     {
-        try {
+        try
+        {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/FileReminderDialog.fxml"));
@@ -169,6 +215,7 @@ public class MainApp extends Application
     }
 
 
+
     /**
      * Returns the person file preference, i.e. the file that was last opened.
      * The preference is read from the OS specific registry. If no such
@@ -176,15 +223,23 @@ public class MainApp extends Application
      *
      * @return
      */
-    public File getProteinFilePath() {
+    public File getProteinFilePath()
+    {
         Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
         String filePath = prefs.get("filePath", null);
-        if (filePath != null) {
+
+        if (filePath != null)
+        {
             return new File(filePath);
-        } else {
+        }
+
+        else
+        {
             return null;
         }
     }
+
+
 
     /**
      * Sets the file path of the currently loaded file. The path is persisted in
@@ -192,14 +247,20 @@ public class MainApp extends Application
      *
      * @param file the file or null to remove the path
      */
-    public void setProteinFilePath(File file) {
+    public void setProteinFilePath(File file)
+    {
         Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
-        if (file != null) {
+
+        if (file != null)
+        {
             prefs.put("filePath", file.getPath());
 
             // Update the stage title.
             primaryStage.setTitle("BiosequenceAnalysisApp - " + file.getName());
-        } else {
+        }
+
+        else
+        {
             prefs.remove("filePath");
 
             // Update the stage title.
@@ -208,18 +269,19 @@ public class MainApp extends Application
     }
 
 
+
     /**
-     * Loads protein data from the specified file.
+     * Loads Protein data from the specified file.
      *
-     * @param inFile
+     * @param inFile    The file uploaded by the user
      */
     public void loadProteinDataFromFile(File inFile)
     {
         Scanner fileReader = null;
+
         try
         {
             // Try opening file fileName
-
             fileReader = new Scanner(inFile);
         }
 
@@ -250,6 +312,7 @@ public class MainApp extends Application
                 proteinList.add(p);
             }
         }
+
         // Save the file path to the registry.
         setProteinFilePath(inFile);
 
@@ -258,18 +321,16 @@ public class MainApp extends Application
 
 
 
-
-
     /**
-     * Saves the current person data to the specified file.
+     * Saves the current data to the specified file.
      *
-     * @param csv
-     * @param inMap
+     * @param csv    The CSV file that data will be written to
+     * @param inMap    The HashMap containing the Peptide data
      */
     public void savePersonDataToFile(File csv, HashMap<Peptide, ArrayList<Integer>> inMap)
     {
-        try {
-
+        try
+        {
             csv.createNewFile();
 
             FileWriter csvWriter = new FileWriter(csv);
@@ -298,8 +359,9 @@ public class MainApp extends Application
             csvWriter.close();
         }
 
+        // catches ANY exception
         catch (Exception e)
-        { // catches ANY exception
+        {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Could not save data");
