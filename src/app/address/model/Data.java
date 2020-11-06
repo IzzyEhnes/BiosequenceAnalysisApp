@@ -1,12 +1,7 @@
 package app.address.model;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import javafx.beans.property.*;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-
-import javax.swing.*;
 
 public class Data
 {
