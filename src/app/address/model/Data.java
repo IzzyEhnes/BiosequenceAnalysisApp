@@ -12,8 +12,19 @@ public class Data
     private final IntegerProperty peptideNum;
 
 
+
     /**
-     * Constructor for the Data class.
+     * Default constructor for the Data class.
+     */
+    public Data()
+    {
+        this(null, null, null, null, null);
+    }
+
+
+
+    /**
+     * Parameterized constructor for the Data class.
      *
      * @param inFoundPeptide    A Peptide found in a Protein in the uploaded data file
      * @param inTargetPeptide    The Peptide the user is searching for
