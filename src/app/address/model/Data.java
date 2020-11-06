@@ -11,6 +11,16 @@ public class Data
     private final IntegerProperty row;
     private final IntegerProperty peptideNum;
 
+
+    /**
+     * Constructor for the Data class.
+     *
+     * @param inFoundPeptide    A Peptide found in a Protein in the uploaded data file
+     * @param inTargetPeptide    The Peptide the user is searching for
+     * @param inScore    The score representing the similarity between the target Peptide and the found peptide
+     * @param inRow    The row in the uploaded data file that the Protein the Peptide was found in is located
+     * @param inPeptideNum    The index of the Peptide's location in the Protein
+     */
     public Data(TextFlow inFoundPeptide, String inTargetPeptide, Integer inScore, Integer inRow, Integer inPeptideNum)
     {
         this.foundPeptide = new SimpleObjectProperty<TextFlow>(inFoundPeptide);
