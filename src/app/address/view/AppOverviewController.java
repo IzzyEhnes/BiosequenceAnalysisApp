@@ -23,8 +23,6 @@ public class AppOverviewController
     private TableColumn<Data, Integer> scoreColumn;
     @FXML
     private TableColumn<Data, Integer> rowColumn;
-    @FXML
-    private TableColumn<Data, Integer> peptideNumColumn;
 
     @FXML
     private TextField peptideField;
@@ -59,7 +57,6 @@ public class AppOverviewController
         targetPeptideColumn.setCellValueFactory(cellData -> cellData.getValue().peptideProperty());
         scoreColumn.setCellValueFactory(cellData -> cellData.getValue().scoreProperty().asObject());
         rowColumn.setCellValueFactory(cellData -> cellData.getValue().rowProperty().asObject());
-        peptideNumColumn.setCellValueFactory(cellData -> cellData.getValue().peptideNumProperty().asObject());
     }
 
 
@@ -109,7 +106,7 @@ public class AppOverviewController
 
                 if (score >= 2)
                 {
-                    mainApp.tableData.add(new Data(foundPeptide, targetPeptide.getPeptide(), list.get(0), list.get(1), list.get(2)));
+                    mainApp.tableData.add(new Data(foundPeptide, targetPeptide.getPeptide(), list.get(0), list.get(1)));
                 }
             }
 

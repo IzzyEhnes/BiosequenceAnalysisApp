@@ -128,14 +128,13 @@ public class Peptide
 
                     int score = currentPeptide.getScore(LCS);
 
-                    if (score >= 2) {
-                        int peptideNum = protein.getPeptideIndexInProtein(peptideList, currentPeptide);
+                    if (score >= 2)
+                    {
 
                         ArrayList<Integer> proteinData = new ArrayList<Integer>();
 
                         proteinData.add(score);
                         proteinData.add(row);
-                        proteinData.add(peptideNum);
 
                         matches.put(currentPeptide, proteinData);
                     }
