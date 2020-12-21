@@ -311,14 +311,13 @@ public class Peptide
     /**
      * The colorCode method "colors" the incoming Peptide based on the target Peptide and their shared LCS. Characters
      * in the Peptide corresponding to the LCS will be colored green, and character(s) between the beginning and ending
-     * LCS indices that are not part of the LCS will be colored red. All characters before and after the beginning and
-     * ending LCS indices will be colored black.
+     * LCS indices that are not part of the LCS will be colored red.
      *
      * The amount of red and green characters present in the Peptide are counted and stored as the Peptide member
      * variables redCount and greenCount, respectively. These values will be used in determining  the similarity score
-     * (@see score method).
+     * (@see getScore method).
      *
-     * @param inPeptide    The incoming Peptide that is to be color coded
+     * @param inPeptide    The incoming Peptide whose LCS is to be color coded
      * @param LCS    The LCS shared by inPeptide and the target Peptide
      * @return textFlow    The Peptide, returned as a color-coded TextFlow object
      */
@@ -333,54 +332,25 @@ public class Peptide
 
         System.out.println("inPeptide.LCSBeginningIndex: " + inPeptide.LCSBeginningIndex);
 
-        int indexOfLastGreen = 0;
-        int indexOfLastRed = 0;
         int LCSCount = 0;
-        for (int i = 0; i < inPeptide.length(); i++)
+        for (int i = inPeptide.LCSBeginningIndex; i < inPeptide.length(); i++)
         {
             Text currentChar = new Text(String.valueOf(inPeptide.peptide.charAt(i)));
 
-            if (i < inPeptide.LCSBeginningIndex || i > inPeptide.LCSEndIndex)
+            if (inPeptide.peptide.charAt(i) == LCS.charAt(LCSCount))
             {
-                currentChar.setFill(Color.BLACK);
+                currentChar.setFill(Color.GREEN);
+                LCSCount++;
+                inPeptide.greenCount++;
             }
 
             else
             {
-                if (inPeptide.peptide.charAt(i) == LCS.charAt(LCSCount))
-                {
-                    currentChar.setFill(Color.GREEN);
-                    indexOfLastGreen = i;
-                    LCSCount++;
-                    inPeptide.greenCount++;
-                }
-
-                else
-                {
-                    currentChar.setFill(Color.RED);
-                    indexOfLastRed = i;
-                    inPeptide.redCount++;
-                }
+                currentChar.setFill(Color.RED);
+                inPeptide.redCount++;
             }
 
             textFlow.getChildren().add(currentChar);
-        }
-
-        System.out.println("indexOfLastRed: " + indexOfLastRed);
-        System.out.println("indexOfLastGreen: " + indexOfLastGreen);
-
-        textFlow.getChildren().remove(indexOfLastGreen + 1, inPeptide.length());
-
-        for (int i = indexOfLastGreen + 1; i < inPeptide.length(); i++)
-        {
-            Text currentChar = new Text(String.valueOf(inPeptide.peptide.charAt(i)));
-            currentChar.setFill(Color.BLACK);
-            textFlow.getChildren().add(currentChar);
-
-            if (i > indexOfLastGreen && i < indexOfLastRed + 1)
-            {
-                redCount--;
-            }
         }
 
         System.out.println("greenCount: " + inPeptide.greenCount);
