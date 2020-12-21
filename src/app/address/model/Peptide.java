@@ -103,19 +103,21 @@ public class Peptide
         ArrayList<Peptide> peptideList = new ArrayList<>();
 
         int row = 0;
+
         for (Protein protein : inList)
         {
             row++;
 
-            peptideList = protein.getPeptidesInProtein();
+            StringBuilder peptideBuilder = new StringBuilder();
 
-            int beginningIndex = 0;
-            int endIndex = 0;
-
+            int currentIndex = 0;
             boolean match = false;
 
-            for (Peptide currentPeptide : peptideList)
+            while (currentIndex != protein.getLength())
             {
+                peptideBuilder.append(protein.getProtein().charAt(currentIndex));
+                Peptide currentPeptide = new Peptide(peptideBuilder.toString());
+
                 match = isMatch(targetPeptide, currentPeptide);
 
                 if (match)
@@ -137,7 +139,11 @@ public class Peptide
 
                         matches.put(currentPeptide, proteinData);
                     }
+
+                    peptideBuilder.setLength(0);
                 }
+
+                currentIndex++;
             }
         }
 
