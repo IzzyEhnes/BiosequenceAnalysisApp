@@ -23,6 +23,8 @@ public class AppOverviewController
     private TableColumn<Data, Integer> scoreColumn;
     @FXML
     private TableColumn<Data, Integer> rowColumn;
+    @FXML
+    private TableColumn<Data, Integer> peptideNumColumn;
 
     @FXML
     private TextField peptideField;
@@ -57,6 +59,7 @@ public class AppOverviewController
         targetPeptideColumn.setCellValueFactory(cellData -> cellData.getValue().peptideProperty());
         scoreColumn.setCellValueFactory(cellData -> cellData.getValue().scoreProperty().asObject());
         rowColumn.setCellValueFactory(cellData -> cellData.getValue().rowProperty().asObject());
+        peptideNumColumn.setCellValueFactory(cellData -> cellData.getValue().peptideNumProperty().asObject());
     }
 
 
@@ -68,6 +71,7 @@ public class AppOverviewController
     public boolean isSearchClicked() {
         return searchClicked;
     }
+
 
 
     /**
@@ -87,7 +91,7 @@ public class AppOverviewController
 
             System.out.println("SEARCHING...");
 
-            Peptide targetPeptide = new Peptide(peptideField.getText());
+            Peptide targetPeptide = new Peptide(peptideField.getText().toUpperCase());
 
             mainApp.matches = targetPeptide.findPotentialMatches(mainApp.getProteinList());
 
@@ -106,7 +110,7 @@ public class AppOverviewController
 
                 if (score >= 2)
                 {
-                    mainApp.tableData.add(new Data(foundPeptide, targetPeptide.getPeptide(), list.get(0), list.get(1)));
+                    mainApp.tableData.add(new Data(foundPeptide, targetPeptide.getPeptide(), list.get(0), list.get(1), list.get(2)));
                 }
             }
 
