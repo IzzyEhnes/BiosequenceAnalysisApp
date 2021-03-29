@@ -9,7 +9,6 @@ public class Data
     private final StringProperty targetPeptide;
     private final IntegerProperty score;
     private final IntegerProperty row;
-    private final IntegerProperty peptideNum;
 
 
 
@@ -18,7 +17,7 @@ public class Data
      */
     public Data()
     {
-        this(null, null, null, null, null);
+        this(null, null, null, null);
     }
 
 
@@ -30,15 +29,13 @@ public class Data
      * @param inTargetPeptide    The Peptide the user is searching for
      * @param inScore    The score representing the similarity between the target Peptide and the found peptide
      * @param inRow    The row in the uploaded data file that the Protein the Peptide was found in is located
-     * @param inPeptideNum    The index of the Peptide's location in the Protein
      */
-    public Data(TextFlow inFoundPeptide, String inTargetPeptide, Integer inScore, Integer inRow, Integer inPeptideNum)
+    public Data(TextFlow inFoundPeptide, String inTargetPeptide, Integer inScore, Integer inRow)
     {
         this.foundPeptide = new SimpleObjectProperty<TextFlow>(inFoundPeptide);
         this.targetPeptide = new SimpleStringProperty(inTargetPeptide);
         this.score = new SimpleIntegerProperty(inScore);
         this.row = new SimpleIntegerProperty(inRow);
-        this.peptideNum = new SimpleIntegerProperty(inPeptideNum);
     }
 
 
@@ -107,22 +104,5 @@ public class Data
     public IntegerProperty rowProperty()
     {
         return row;
-    }
-
-
-
-    public Integer getPeptideNum()
-    {
-        return peptideNum.get();
-    }
-
-    public void setSimilarity(Integer inPeptideNum)
-    {
-        this.peptideNum.set(inPeptideNum);
-    }
-
-    public IntegerProperty peptideNumProperty()
-    {
-        return peptideNum;
     }
 }

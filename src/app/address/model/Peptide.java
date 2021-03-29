@@ -155,7 +155,7 @@ public class Peptide
     {
         String LCS = getLongestCommonSubsequence(targetPeptide, inPeptide);
 
-        if (LCS.length() > 2)
+        if (LCS.length() >= 1)
         {
             return true;
         }
@@ -247,6 +247,9 @@ public class Peptide
             sb.append(LCS[k]);
         }
 
+
+        System.out.println(sb.toString().length());
+        System.out.println(sb.toString().trim().length());
         return sb.toString().trim();
     }
 
@@ -318,7 +321,18 @@ public class Peptide
      */
     public TextFlow colorCode(Peptide inPeptide, String LCS)
     {
+        System.out.println(LCS);
         TextFlow textFlow = new TextFlow();
+
+        if (LCS.length() == 1)
+        {
+            Text currentChar = new Text(String.valueOf(LCS.charAt(0)));
+            currentChar.setFill(Color.GREEN);
+            textFlow.getChildren().add(currentChar);
+            greenCount++;
+
+            return textFlow;
+        }
 
         inPeptide.setLCSBeginningIndex(LCS);
 
@@ -330,21 +344,19 @@ public class Peptide
         {
             Text currentChar = new Text(String.valueOf(inPeptide.peptide.charAt(i)));
 
-            System.out.println(inPeptide.peptide.charAt(i));
-
             if (inPeptide.peptide.charAt(i) == LCS.charAt(LCSIndex))
             {
                 currentChar.setFill(Color.GREEN);
                 indexOfLastGreen = i;
                 LCSIndex++;
-                inPeptide.greenCount++;
+                greenCount++;
             }
 
             else
             {
                 currentChar.setFill(Color.RED);
                 indexOfLastRed = i;
-                inPeptide.redCount++;
+                redCount++;
             }
 
             textFlow.getChildren().add(currentChar);
@@ -356,16 +368,6 @@ public class Peptide
                 break;
             }
         }
-
-        /*
-        System.out.println(inPeptide.length());
-        textFlow.getChildren().remove(0, inPeptide.length() - 1);
-        System.out.println(inPeptide);
-        System.out.println(indexOfLastGreen);
-        System.out.println();
-        //textFlow.getChildren().remove(indexOfLastGreen, inPeptide.length() - 1);
-         */
-
 
         for (int i = indexOfLastGreen + 1; i < inPeptide.length(); i++)
         {
@@ -397,6 +399,8 @@ public class Peptide
         int score = 0;
 
         score = (2 * greenCount) - missing - redCount;
+
+        System.out.println("SCORE: " + score);
 
         return score;
     }
