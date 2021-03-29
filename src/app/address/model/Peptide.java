@@ -96,46 +96,70 @@ public class Peptide
      */
     public HashMap<Peptide, ArrayList<Integer>> findPotentialMatches(ArrayList<Protein> inList)
     {
-        HashMap<Peptide, ArrayList<Integer>> matches = new HashMap<Peptide, ArrayList<Integer>>();
+        HashMap<Peptide, ArrayList<Integer>> matches = new HashMap<>();
 
         Peptide targetPeptide = this;
-
-        ArrayList<Peptide> peptideList = new ArrayList<>();
 
         int row = 0;
 
         for (Protein protein : inList)
         {
+            ArrayList<ArrayList<String>> LCSList = new ArrayList<>();
+
             row++;
+
+            StringBuilder peptideBuilder = new StringBuilder();
 
             int currentIndex = 0;
             boolean match = false;
 
-            Peptide currentPeptide = new Peptide(protein.getProtein());
-
-            match = isMatch(targetPeptide, currentPeptide);
-
-            if (match)
+            while (currentIndex != protein.getLength())
             {
-                String LCS = currentPeptide.getLongestCommonSubsequence(targetPeptide, currentPeptide);
+                peptideBuilder.append(protein.getProtein().charAt(currentIndex));
+                Peptide currentPeptide = new Peptide(peptideBuilder.toString());
 
-                currentPeptide.colorCode(currentPeptide, LCS);
+                match = isMatch(targetPeptide, currentPeptide);
 
-                int score = currentPeptide.getScore(LCS);
-
-                if (score >= 2)
+                if (match)
                 {
-                    int peptideNum = protein.getPeptideIndexInProtein(peptideList, currentPeptide);
+                    String LCS = currentPeptide.getLongestCommonSubsequence(targetPeptide, currentPeptide);
 
-                    ArrayList<Integer> proteinData = new ArrayList<Integer>();
+                    currentPeptide.colorCode(currentPeptide, LCS);
 
-                    proteinData.add(score);
-                    proteinData.add(row);
-                    proteinData.add(peptideNum);
+                    int score = currentPeptide.getScore(LCS);
 
-                    matches.put(currentPeptide, proteinData);
+                    if (score >= 2)
+                    {
+                        ArrayList<String> LCSTemp = new ArrayList<>();
+                        LCSTemp.add(currentPeptide.peptide);
+                        LCSTemp.add(String.valueOf(score));
+                        LCSTemp.add(String.valueOf(row));
+                        LCSTemp.add(LCS);
+
+                        LCSList.add(LCSTemp);
+                    }
+                }
+
+                currentIndex++;
+            }
+
+            ArrayList<Integer> proteinData = new ArrayList<>();
+
+            int maxScore = 0;
+            String currentPeptide = "";
+            for (ArrayList<String> list : LCSList)
+            {
+                if (Integer.parseInt(list.get(1)) > maxScore)
+                {
+                    maxScore = Integer.parseInt(list.get(1));
+                    currentPeptide = list.get(0);
+                    proteinData.clear();
+                    proteinData.add(Integer.parseInt(list.get(1)));
+                    proteinData.add(Integer.parseInt(list.get(2)));
                 }
             }
+
+            matches.put(new Peptide(currentPeptide), proteinData);
         }
 
         return matches;
@@ -181,9 +205,6 @@ public class Peptide
      */
     public String getLongestCommonSubsequence(Peptide targetPeptide, Peptide inPeptide)
     {
-        //System.out.println(targetPeptide);
-        //System.out.println(inPeptide);
-
         int m = targetPeptide.length();
         int n = inPeptide.length();
 
@@ -218,6 +239,7 @@ public class Peptide
 
         int i = m;
         int j = n;
+
         while (i > 0 && j > 0)
         {
             if (targetPeptide.peptide.charAt(i - 1) == inPeptide.peptide.charAt(j - 1))
@@ -247,8 +269,8 @@ public class Peptide
             sb.append(LCS[k]);
         }
 
-        System.out.println(LCSEndIndex);
-        System.out.println("LCS:" + sb.toString().trim());
+        //System.out.println(LCSEndIndex);
+        //System.out.println(sb.toString().trim());
         return sb.toString().trim();
     }
 

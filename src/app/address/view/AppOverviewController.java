@@ -70,7 +70,6 @@ public class AppOverviewController
     }
 
 
-
     /**
      * Called when the user clicks Search
      */
@@ -88,7 +87,7 @@ public class AppOverviewController
 
             System.out.println("SEARCHING...");
 
-            Peptide targetPeptide = new Peptide(peptideField.getText().toUpperCase());
+            Peptide targetPeptide = new Peptide(peptideField.getText());
 
             mainApp.matches = targetPeptide.findPotentialMatches(mainApp.getProteinList());
 
