@@ -108,42 +108,33 @@ public class Peptide
         {
             row++;
 
-            StringBuilder peptideBuilder = new StringBuilder();
-
             int currentIndex = 0;
             boolean match = false;
 
-            while (currentIndex != protein.getLength())
+            Peptide currentPeptide = new Peptide(protein.getProtein());
+
+            match = isMatch(targetPeptide, currentPeptide);
+
+            if (match)
             {
-                peptideBuilder.append(protein.getProtein().charAt(currentIndex));
-                Peptide currentPeptide = new Peptide(peptideBuilder.toString());
+                String LCS = currentPeptide.getLongestCommonSubsequence(targetPeptide, currentPeptide);
 
-                match = isMatch(targetPeptide, currentPeptide);
+                currentPeptide.colorCode(currentPeptide, LCS);
 
-                if (match)
+                int score = currentPeptide.getScore(LCS);
+
+                if (score >= 2)
                 {
-                    String LCS = currentPeptide.getLongestCommonSubsequence(targetPeptide, currentPeptide);
+                    int peptideNum = protein.getPeptideIndexInProtein(peptideList, currentPeptide);
 
-                    currentPeptide.colorCode(currentPeptide, LCS);
+                    ArrayList<Integer> proteinData = new ArrayList<Integer>();
 
-                    int score = currentPeptide.getScore(LCS);
+                    proteinData.add(score);
+                    proteinData.add(row);
+                    proteinData.add(peptideNum);
 
-                    if (score >= 2) {
-                        int peptideNum = protein.getPeptideIndexInProtein(peptideList, currentPeptide);
-
-                        ArrayList<Integer> proteinData = new ArrayList<Integer>();
-
-                        proteinData.add(score);
-                        proteinData.add(row);
-                        proteinData.add(peptideNum);
-
-                        matches.put(currentPeptide, proteinData);
-                    }
-
-                    peptideBuilder.setLength(0);
+                    matches.put(currentPeptide, proteinData);
                 }
-
-                currentIndex++;
             }
         }
 
@@ -190,6 +181,9 @@ public class Peptide
      */
     public String getLongestCommonSubsequence(Peptide targetPeptide, Peptide inPeptide)
     {
+        //System.out.println(targetPeptide);
+        //System.out.println(inPeptide);
+
         int m = targetPeptide.length();
         int n = inPeptide.length();
 
@@ -253,7 +247,7 @@ public class Peptide
             sb.append(LCS[k]);
         }
 
-        return sb.toString();
+        return sb.toString().trim();
     }
 
 
@@ -326,70 +320,60 @@ public class Peptide
     {
         TextFlow textFlow = new TextFlow();
 
-        System.out.println("inPeptide: " + inPeptide);
-        System.out.println("inPeptide.LCSEndIndex: " + inPeptide.LCSEndIndex);
-
         inPeptide.setLCSBeginningIndex(LCS);
-
-        System.out.println("inPeptide.LCSBeginningIndex: " + inPeptide.LCSBeginningIndex);
 
         int indexOfLastGreen = 0;
         int indexOfLastRed = 0;
-        int LCSCount = 0;
-        for (int i = 0; i < inPeptide.length(); i++)
+        int LCSIndex = 0;
+        int charCount = 0;
+        for (int i = inPeptide.LCSBeginningIndex; i < inPeptide.length(); i++)
         {
             Text currentChar = new Text(String.valueOf(inPeptide.peptide.charAt(i)));
 
-            if (i < inPeptide.LCSBeginningIndex || i > inPeptide.LCSEndIndex)
+            System.out.println(inPeptide.peptide.charAt(i));
+
+            if (inPeptide.peptide.charAt(i) == LCS.charAt(LCSIndex))
             {
-                currentChar.setFill(Color.BLACK);
+                currentChar.setFill(Color.GREEN);
+                indexOfLastGreen = i;
+                LCSIndex++;
+                inPeptide.greenCount++;
             }
 
             else
             {
-                if (inPeptide.peptide.charAt(i) == LCS.charAt(LCSCount))
-                {
-                    currentChar.setFill(Color.GREEN);
-                    indexOfLastGreen = i;
-                    LCSCount++;
-                    inPeptide.greenCount++;
-                }
-
-                else
-                {
-                    currentChar.setFill(Color.RED);
-                    indexOfLastRed = i;
-                    inPeptide.redCount++;
-                }
+                currentChar.setFill(Color.RED);
+                indexOfLastRed = i;
+                inPeptide.redCount++;
             }
 
             textFlow.getChildren().add(currentChar);
+
+            charCount++;
+
+            if (charCount == LCS.length() + 1 || LCSIndex == LCS.length())
+            {
+                break;
+            }
         }
 
-        System.out.println("indexOfLastRed: " + indexOfLastRed);
-        System.out.println("indexOfLastGreen: " + indexOfLastGreen);
-
-        //textFlow.getChildren().remove(0, inPeptide.LCSBeginningIndex);
-        //textFlow.getChildren().remove(indexOfLastGreen, inPeptide.length());
+        /*
+        System.out.println(inPeptide.length());
+        textFlow.getChildren().remove(0, inPeptide.length() - 1);
+        System.out.println(inPeptide);
+        System.out.println(indexOfLastGreen);
+        System.out.println();
+        //textFlow.getChildren().remove(indexOfLastGreen, inPeptide.length() - 1);
+         */
 
 
         for (int i = indexOfLastGreen + 1; i < inPeptide.length(); i++)
         {
-            Text currentChar = new Text(String.valueOf(inPeptide.peptide.charAt(i)));
-            currentChar.setFill(Color.BLACK);
-            textFlow.getChildren().add(currentChar);
-
             if (i > indexOfLastGreen && i < indexOfLastRed + 1)
             {
                 redCount--;
             }
         }
-
-        System.out.println("greenCount: " + inPeptide.greenCount);
-        System.out.println("redCount: " + inPeptide.redCount);
-        System.out.println("Score: " + inPeptide.getScore(LCS));
-
-        System.out.println();
 
         return textFlow;
     }
