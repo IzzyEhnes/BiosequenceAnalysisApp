@@ -247,9 +247,8 @@ public class Peptide
             sb.append(LCS[k]);
         }
 
-
-        System.out.println(sb.toString().length());
-        System.out.println(sb.toString().trim().length());
+        System.out.println(LCSEndIndex);
+        System.out.println("LCS:" + sb.toString().trim());
         return sb.toString().trim();
     }
 
@@ -321,7 +320,6 @@ public class Peptide
      */
     public TextFlow colorCode(Peptide inPeptide, String LCS)
     {
-        System.out.println(LCS);
         TextFlow textFlow = new TextFlow();
 
         if (LCS.length() == 1)
@@ -340,6 +338,7 @@ public class Peptide
         int indexOfLastRed = 0;
         int LCSIndex = 0;
         int charCount = 0;
+
         for (int i = inPeptide.LCSBeginningIndex; i < inPeptide.length(); i++)
         {
             Text currentChar = new Text(String.valueOf(inPeptide.peptide.charAt(i)));
@@ -399,8 +398,6 @@ public class Peptide
         int score = 0;
 
         score = (2 * greenCount) - missing - redCount;
-
-        System.out.println("SCORE: " + score);
 
         return score;
     }
