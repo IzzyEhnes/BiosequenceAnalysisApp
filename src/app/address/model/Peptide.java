@@ -1,5 +1,6 @@
 package app.address.model;
 
+import app.address.MainApp;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -111,7 +112,7 @@ public class Peptide
             StringBuilder peptideBuilder = new StringBuilder();
 
             int currentIndex = 0;
-            boolean match = false;
+            boolean match;
 
             while (currentIndex != protein.getLength())
             {
@@ -179,15 +180,7 @@ public class Peptide
     {
         String LCS = getLongestCommonSubsequence(targetPeptide, inPeptide);
 
-        if (LCS.length() >= 1)
-        {
-            return true;
-        }
-
-        else
-        {
-            return false;
-        }
+        return LCS.length() >= 1;
     }
 
 
@@ -285,15 +278,7 @@ public class Peptide
      */
     public int findMax(int a, int b)
     {
-        if (a > b)
-        {
-            return a;
-        }
-
-        else
-        {
-            return b;
-        }
+        return Math.max(a, b);
     }
 
 
@@ -329,11 +314,10 @@ public class Peptide
     /**
      * The colorCode method "colors" the incoming Peptide based on the target Peptide and their shared LCS. Characters
      * in the Peptide corresponding to the LCS will be colored green, and character(s) between the beginning and ending
-     * LCS indices that are not part of the LCS will be colored red. All characters before and after the beginning and
-     * ending LCS indices will be colored black.
+     * LCS indices that are not part of the LCS will be colored red.
      *
      * The amount of red and green characters present in the Peptide are counted and stored as the Peptide member
-     * variables redCount and greenCount, respectively. These values will be used in determining  the similarity score
+     * variables redCount and greenCount, respectively. These values will be used in determining the similarity score
      * (@see score method).
      *
      * @param inPeptide    The incoming Peptide that is to be color coded
@@ -410,18 +394,15 @@ public class Peptide
      *
      *
      * @param inLCS    The longest common subsequence shared by the target Peptide and calling Peptide
-     * @return score    An integer that represents the similarity between the calling and target Peptides
+     * @return An integer that represents the similarity between the calling and target Peptides
      */
     public int getScore(String inLCS)
     {
         int redCount = this.redCount;
         int greenCount = this.greenCount;
         int missing = inLCS.length() - greenCount;
-        int score = 0;
 
-        score = (2 * greenCount) - missing - redCount;
-
-        return score;
+        return (2 * greenCount) - missing - redCount;
     }
 
 
@@ -434,15 +415,7 @@ public class Peptide
      */
     public boolean equals(Peptide inPeptide)
     {
-        if (this.peptide.equals(inPeptide.peptide))
-        {
-            return true;
-        }
-
-        else
-        {
-            return false;
-        }
+        return this.peptide.equals(inPeptide.peptide);
     }
 
 

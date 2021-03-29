@@ -335,14 +335,15 @@ public class MainApp extends Application
 
             FileWriter csvWriter = new FileWriter(csv);
 
-            csvWriter.append("PROTEIN").append(',');
-            csvWriter.append("PEPTIDE").append(',');
-            csvWriter.append("ROW").append(',');
-            csvWriter.append("BEGINNING INDEX").append(',');
-            csvWriter.append("END INDEX").append('\n');
+            csvWriter.append("FOUND PEPTIDE").append(',');
+            csvWriter.append("TARGET PEPTIDE").append(',');
+            csvWriter.append("SCORE").append(',');
+            csvWriter.append("ROW").append(',').append('\n');
 
             for (Peptide p : inMap.keySet())
             {
+                System.out.println(p);
+
                 csvWriter.append(p.getPeptide()).append(',');
 
                 ArrayList<Integer> list = inMap.get(p);
