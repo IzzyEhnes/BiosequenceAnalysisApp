@@ -1,6 +1,5 @@
 package app.address.model;
 
-import app.address.MainApp;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -262,8 +261,6 @@ public class Peptide
             sb.append(LCS[k]);
         }
 
-        //System.out.println(LCSEndIndex);
-        //System.out.println(sb.toString().trim());
         return sb.toString().trim();
     }
 

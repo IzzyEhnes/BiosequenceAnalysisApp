@@ -17,7 +17,7 @@ public class RootLayoutController
     /**
      * Is called by the main application to give a reference back to itself.
      *
-     * @param mainApp
+     * @param mainApp  A reference to the main application
      */
     public void setMainApp(MainApp mainApp)
     {
@@ -76,7 +76,7 @@ public class RootLayoutController
                 file = new File(file.getPath() + ".csv");
             }
 
-            mainApp.savePersonDataToFile(file, mainApp.matches);
+            mainApp.savePeptideDataToFile(file, mainApp.matches);
         }
     }
 
@@ -98,8 +98,8 @@ public class RootLayoutController
      * Closes the application.
      */
     @FXML
-    private void handleExit() {
+    private void handleExit()
+    {
         System.exit(0);
     }
-
 }

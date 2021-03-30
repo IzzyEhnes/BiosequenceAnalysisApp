@@ -32,7 +32,7 @@ public class Data
      */
     public Data(TextFlow inFoundPeptide, String inTargetPeptide, Integer inScore, Integer inRow)
     {
-        this.foundPeptide = new SimpleObjectProperty<TextFlow>(inFoundPeptide);
+        this.foundPeptide = new SimpleObjectProperty<>(inFoundPeptide);
         this.targetPeptide = new SimpleStringProperty(inTargetPeptide);
         this.score = new SimpleIntegerProperty(inScore);
         this.row = new SimpleIntegerProperty(inRow);
@@ -57,17 +57,17 @@ public class Data
 
 
 
-    public String getPeptide()
+    public String getTargetPeptide()
     {
         return targetPeptide.get();
     }
 
-    public void setPeptide(String inPeptide)
+    public void setTargetPeptide(String inPeptide)
     {
         this.targetPeptide.set(inPeptide);
     }
 
-    public StringProperty peptideProperty()
+    public StringProperty targetPeptideProperty()
     {
         return targetPeptide;
     }

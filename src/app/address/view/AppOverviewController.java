@@ -27,13 +27,8 @@ public class AppOverviewController
     @FXML
     private TextField peptideField;
 
-    private boolean searchClicked = false;
-    private boolean clearTableClicked = false;
-
     // Reference to the main application.
     private MainApp mainApp;
-
-    private Data record;
 
     /**
      * The constructor.
@@ -54,19 +49,9 @@ public class AppOverviewController
     {
         // Initialize the data table with the five columns.
         foundPeptideColumn.setCellValueFactory(cellData -> cellData.getValue().foundPeptideProperty());
-        targetPeptideColumn.setCellValueFactory(cellData -> cellData.getValue().peptideProperty());
+        targetPeptideColumn.setCellValueFactory(cellData -> cellData.getValue().targetPeptideProperty());
         scoreColumn.setCellValueFactory(cellData -> cellData.getValue().scoreProperty().asObject());
         rowColumn.setCellValueFactory(cellData -> cellData.getValue().rowProperty().asObject());
-    }
-
-
-    /**
-     * Returns true if the user clicked Search, false otherwise.
-     *
-     * @return
-     */
-    public boolean isSearchClicked() {
-        return searchClicked;
     }
 
 
@@ -78,14 +63,12 @@ public class AppOverviewController
     {
         if (!mainApp.fileOpened)
         {
-            boolean okClicked = mainApp.showFileReminderDialog();
+            mainApp.showFileReminderDialog();
         }
 
         else
         {
             mainApp.tableData.clear();
-
-            System.out.println("SEARCHING...");
 
             Peptide targetPeptide = new Peptide(peptideField.getText());
 
@@ -97,8 +80,7 @@ public class AppOverviewController
 
                 String LCS = p.getLongestCommonSubsequence(targetPeptide, p);
 
-                TextFlow foundPeptide = new TextFlow();
-                foundPeptide = p.colorCode(p, LCS);
+                TextFlow foundPeptide = p.colorCode(p, LCS);
 
                 foundPeptide.setPrefHeight(foundPeptide.prefHeight(foundPeptideColumn.getWidth()));
 
@@ -109,8 +91,6 @@ public class AppOverviewController
                     mainApp.tableData.add(new Data(foundPeptide, targetPeptide.getPeptide(), list.get(0), list.get(1)));
                 }
             }
-
-            System.out.println("END SEARCH");
         }
     }
 
@@ -120,8 +100,6 @@ public class AppOverviewController
     private void handleClearTable()
     {
         mainApp.tableData.clear();
-
-        clearTableClicked = true;
     }
 
 
@@ -129,7 +107,7 @@ public class AppOverviewController
     /**
      * Is called by the main application to give a reference back to itself.
      *
-     * @param mainApp
+     * @param mainApp   A reference to the main application
      */
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;

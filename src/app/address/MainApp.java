@@ -19,8 +19,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -34,7 +36,7 @@ public class MainApp extends Application
 
     public ObservableList<Data> tableData = FXCollections.observableArrayList();
     public ArrayList<Protein> proteinList = new ArrayList<>();
-    public HashMap<Peptide, ArrayList<Integer>> matches = new HashMap<Peptide, ArrayList<Integer>>();
+    public HashMap<Peptide, ArrayList<Integer>> matches = new HashMap<>();
 
 
 
@@ -81,7 +83,9 @@ public class MainApp extends Application
     public void start(Stage primaryStage)
     {
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("BiosequenceAnalysisApp");
+        this.primaryStage.setTitle("Biosequence Analyzer");
+
+        this.primaryStage.getIcons().add(new Image("file:src/Media/app_logo.png"));
 
         initRootLayout();
 
@@ -100,7 +104,7 @@ public class MainApp extends Application
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/RootLayout.fxml"));
-            rootLayout = (BorderPane) loader.load();
+            rootLayout = loader.load();
 
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
@@ -131,7 +135,7 @@ public class MainApp extends Application
             // Load app overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/AppOverview.fxml"));
-            AnchorPane personOverview = (AnchorPane) loader.load();
+            AnchorPane personOverview = loader.load();
 
             // Set app overview into the center of root layout.
             rootLayout.setCenter(personOverview);
@@ -186,7 +190,7 @@ public class MainApp extends Application
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/FileReminderDialog.fxml"));
-            AnchorPane page = (AnchorPane) loader.load();
+            AnchorPane page = loader.load();
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
@@ -221,7 +225,7 @@ public class MainApp extends Application
      * The preference is read from the OS specific registry. If no such
      * preference can be found, null is returned.
      *
-     * @return
+     * @return the filepath specified by the user, or null if none was specified
      */
     public File getProteinFilePath()
     {
@@ -256,7 +260,7 @@ public class MainApp extends Application
             prefs.put("filePath", file.getPath());
 
             // Update the stage title.
-            primaryStage.setTitle("BiosequenceAnalysisApp - " + file.getName());
+            primaryStage.setTitle("Biosequence Analyzer - " + file.getName());
         }
 
         else
@@ -264,7 +268,7 @@ public class MainApp extends Application
             prefs.remove("filePath");
 
             // Update the stage title.
-            primaryStage.setTitle("BiosequenceAnalysisApp");
+            primaryStage.setTitle("Biosequence Analyzer");
         }
     }
 
@@ -296,17 +300,14 @@ public class MainApp extends Application
         }
 
         // Read CSV file and add proteins to an ArrayList
-        while (fileReader.hasNextLine())
+        while (true)
         {
+            assert fileReader != null;
+            if (!fileReader.hasNextLine()) break;
             String line = fileReader.nextLine().trim();
 
             // If the row is column names or is empty, skip it
-            if (line.charAt(0) == '#' || line.length() == 0)
-            {
-                continue;
-            }
-
-            else
+            if (line.length() != 0 && line.charAt(0) != '#')
             {
                 Protein p = new Protein(line);
                 proteinList.add(p);
@@ -315,8 +316,6 @@ public class MainApp extends Application
 
         // Save the file path to the registry.
         setProteinFilePath(inFile);
-
-        System.out.println("UPLOADED");
     }
 
 
@@ -327,7 +326,7 @@ public class MainApp extends Application
      * @param csv    The CSV file that data will be written to
      * @param inMap    The HashMap containing the Peptide data
      */
-    public void savePersonDataToFile(File csv, HashMap<Peptide, ArrayList<Integer>> inMap)
+    public void savePeptideDataToFile(File csv, HashMap<Peptide, ArrayList<Integer>> inMap)
     {
         try
         {
@@ -340,20 +339,18 @@ public class MainApp extends Application
             csvWriter.append("SCORE").append(',');
             csvWriter.append("ROW").append(',').append('\n');
 
-            for (Peptide p : inMap.keySet())
+            for (Data d : tableData)
             {
-                System.out.println(p);
+                // Extracting a String from the TextFlow representing the found peptide
+                StringBuilder foundPeptide = new StringBuilder();
+                d.getFoundPeptide().getChildren().stream()
+                        .filter(t -> Text.class.equals(t.getClass()))
+                        .forEach(t -> foundPeptide.append(((Text) t).getText()));
 
-                csvWriter.append(p.getPeptide()).append(',');
-
-                ArrayList<Integer> list = inMap.get(p);
-
-                for (Integer s : list)
-                {
-                    csvWriter.append(Character.highSurrogate(s)).append(',');
-                }
-
-                csvWriter.append('\n');
+                csvWriter.append(foundPeptide.toString()).append(',');
+                csvWriter.append(d.getTargetPeptide()).append(',');
+                csvWriter.append(String.valueOf(d.getScore())).append(',');
+                csvWriter.append(String.valueOf(d.getRow())).append('\n');
             }
 
             csvWriter.flush();
