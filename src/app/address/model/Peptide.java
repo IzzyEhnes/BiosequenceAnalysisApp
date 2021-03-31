@@ -352,6 +352,7 @@ public class Peptide
                 indexOfLastGreen = i;
                 LCSIndex++;
                 greenCount++;
+                charCount++;
             }
 
             else
@@ -363,9 +364,7 @@ public class Peptide
 
             textFlow.getChildren().add(currentChar);
 
-            charCount++;
-
-            if (charCount == LCS.length() + 1 || LCSIndex == LCS.length())
+            if (charCount == LCS.length() || LCSIndex == LCS.length())
             {
                 break;
             }
