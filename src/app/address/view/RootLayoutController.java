@@ -42,6 +42,8 @@ public class RootLayoutController
         // Show open file dialog
         File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
 
+        mainApp.proteinList.clear();
+
         if (file != null)
         {
             mainApp.loadProteinDataFromFile(file);
