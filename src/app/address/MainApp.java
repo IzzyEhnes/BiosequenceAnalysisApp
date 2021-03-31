@@ -311,7 +311,7 @@ public class MainApp extends Application
             // If the row is column names or is empty, skip it
             if (line.length() != 0 && line.charAt(0) != '#')
             {
-                Protein p = new Protein(line);
+                Protein p = new Protein(line.toUpperCase());
                 proteinList.add(p);
             }
         }

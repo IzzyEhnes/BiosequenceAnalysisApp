@@ -70,7 +70,7 @@ public class AppOverviewController
         {
             mainApp.tableData.clear();
 
-            Peptide targetPeptide = new Peptide(peptideField.getText());
+            Peptide targetPeptide = new Peptide(peptideField.getText().toUpperCase());
 
             mainApp.matches = targetPeptide.findPotentialMatches(mainApp.getProteinList());
 
