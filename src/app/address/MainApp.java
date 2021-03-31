@@ -261,6 +261,8 @@ public class MainApp extends Application
 
             // Update the stage title.
             primaryStage.setTitle("Biosequence Analyzer - " + file.getName());
+
+            fileOpened = true;
         }
 
         else

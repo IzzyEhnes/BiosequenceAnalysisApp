@@ -47,7 +47,7 @@ public class RootLayoutController
             mainApp.loadProteinDataFromFile(file);
         }
 
-        mainApp.fileOpened = true;
+        //mainApp.fileOpened = true;
     }
 
 
