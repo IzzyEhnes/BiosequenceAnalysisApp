@@ -42,14 +42,13 @@ public class RootLayoutController
         // Show open file dialog
         File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
 
+        // Clears proteinList so protein data from previously opened file isn't used
         mainApp.proteinList.clear();
 
         if (file != null)
         {
             mainApp.loadProteinDataFromFile(file);
         }
-
-        //mainApp.fileOpened = true;
     }
 
 

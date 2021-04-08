@@ -113,6 +113,9 @@ public class Peptide
             int currentIndex = 0;
             boolean match;
 
+            int previousLCSBeginningIndex = -1;
+            int previousLCSEndIndex = -1;
+
             while (currentIndex != protein.getLength())
             {
                 peptideBuilder.append(protein.getProtein().charAt(currentIndex));
@@ -120,46 +123,65 @@ public class Peptide
 
                 match = isMatch(targetPeptide, currentPeptide);
 
+                currentIndex++;
+
                 if (match)
                 {
                     String LCS = currentPeptide.getLongestCommonSubsequence(targetPeptide, currentPeptide);
 
-                    currentPeptide.colorCode(currentPeptide, LCS);
-
-                    int score = currentPeptide.getScore(LCS);
-
-                    if (score >= 2)
+                    // If current match has already been found, skip it
+                    if (currentPeptide.LCSBeginningIndex == previousLCSBeginningIndex
+                            && currentPeptide.LCSEndIndex == previousLCSEndIndex)
                     {
-                        ArrayList<String> LCSTemp = new ArrayList<>();
-                        LCSTemp.add(currentPeptide.peptide);
-                        LCSTemp.add(String.valueOf(score));
-                        LCSTemp.add(String.valueOf(row));
-                        LCSTemp.add(LCS);
+                        continue;
+                    }
 
-                        LCSList.add(LCSTemp);
+                    else
+                    {
+
+                        previousLCSBeginningIndex = currentPeptide.LCSBeginningIndex;
+                        previousLCSEndIndex = currentPeptide.LCSEndIndex;
+
+                        currentPeptide.colorCode(currentPeptide, LCS);
+
+                        int score = currentPeptide.getScore(LCS);
+
+                        if (score >= 2)
+                        {
+                            ArrayList<String> LCSTemp = new ArrayList<>();
+                            LCSTemp.add(currentPeptide.peptide);
+                            LCSTemp.add(String.valueOf(score));
+                            LCSTemp.add(String.valueOf(row));
+                            LCSTemp.add(LCS);
+                            LCSTemp.add(String.valueOf(currentPeptide.LCSBeginningIndex));
+                            LCSTemp.add(String.valueOf(currentPeptide.LCSEndIndex));
+
+                            LCSList.add(LCSTemp);
+                        }
                     }
                 }
-
-                currentIndex++;
             }
 
-            ArrayList<Integer> proteinData = new ArrayList<>();
+            // Removes matches that have the same LCS beginning index as a longer match that begins at the same index
+            for (int i = 0; i < LCSList.size() - 1; i++)
+            {
+                if (LCSList.get(i).get(4).equals(LCSList.get(i + 1).get(4)))
+                {
+                    LCSList.remove(i);
+                    i--;
+                }
+            }
 
-            int maxScore = 0;
             String currentPeptide = "";
             for (ArrayList<String> list : LCSList)
             {
-                if (Integer.parseInt(list.get(1)) > maxScore)
-                {
-                    maxScore = Integer.parseInt(list.get(1));
-                    currentPeptide = list.get(0);
-                    proteinData.clear();
-                    proteinData.add(Integer.parseInt(list.get(1)));
-                    proteinData.add(Integer.parseInt(list.get(2)));
-                }
-            }
+                ArrayList<Integer> proteinData = new ArrayList<>();
+                currentPeptide = list.get(0);
+                proteinData.add(Integer.parseInt(list.get(1))); // score
+                proteinData.add(Integer.parseInt(list.get(2))); // row number
 
-            matches.put(new Peptide(currentPeptide), proteinData);
+                matches.put(new Peptide(currentPeptide), proteinData);
+            }
         }
 
         return matches;
@@ -325,6 +347,7 @@ public class Peptide
     {
         TextFlow textFlow = new TextFlow();
 
+        // If LCS is only one character, color it green and return it
         if (LCS.length() == 1)
         {
             Text currentChar = new Text(String.valueOf(LCS.charAt(0)));

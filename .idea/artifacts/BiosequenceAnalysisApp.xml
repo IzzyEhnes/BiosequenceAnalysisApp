@@ -1,0 +1,26 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="BiosequenceAnalysisApp">
+    <output-path>$PROJECT_DIR$/out/artifacts/BiosequenceAnalysisApp</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="app.address.MainApp" />
+        <option name="description" value="" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="icons">
+          <JavaFxApplicationIcons>
+            <option name="windowsIcon" value="$PROJECT_DIR$/src/Media/app_logo_icon.ico" />
+          </JavaFxApplicationIcons>
+        </option>
+        <option name="nativeBundle" value="all" />
+        <option name="title" value="Biosequence Analyzer" />
+        <option name="vendor" value="" />
+        <option name="version" value="1.0.0.0" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="BiosequenceAnalysisApp.jar">
+        <element id="module-output" name="BiosequenceAnalysisApp" />
+      </element>
+    </root>
+  </artifact>
+</component>

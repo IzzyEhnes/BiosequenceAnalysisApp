@@ -85,7 +85,8 @@ public class MainApp extends Application
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Biosequence Analyzer");
 
-        this.primaryStage.getIcons().add(new Image("file:src/Media/app_logo.png"));
+        // Set icon of the application
+        this.primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/Media/app_logo.png")));
 
         initRootLayout();
 
