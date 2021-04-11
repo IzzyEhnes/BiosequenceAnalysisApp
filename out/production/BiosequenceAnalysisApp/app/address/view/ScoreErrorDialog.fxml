@@ -9,33 +9,36 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="502.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.address.view.FileReminderDialogController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="502.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.address.view.ScoreErrorDialogController">
    <children>
       <SplitPane dividerPositions="0.782258064516129" layoutX="124.0" layoutY="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="250.0" prefWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="478.0" SplitPane.resizableWithParent="false">
                <children>
-                  <Label layoutX="168.0" layoutY="54.0" prefHeight="112.0" prefWidth="301.0" text="No data file has been uploaded, so the search could not be performed." wrapText="true">
+                  <Label layoutX="166.0" layoutY="61.0" prefHeight="34.0" prefWidth="270.0" text="This may have been caused by:" wrapText="true">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="168.0" layoutY="31.0" prefHeight="26.0" prefWidth="286.0" text="File Error: CSV Missing">
+                  <Label layoutX="126.0" layoutY="28.0" prefHeight="26.0" prefWidth="355.0" text="Error: Invalid Score Boundary">
                      <font>
                         <Font name="System Bold" size="21.0" />
                      </font>
                   </Label>
-                  <ImageView fitHeight="132.0" fitWidth="138.0" layoutX="21.0" layoutY="19.0">
-                     <image>
-                        <Image url="@../../../Media/csv_error.png" />
-                     </image>
-                  </ImageView>
-                  <Label layoutX="54.0" layoutY="160.0" prefHeight="16.0" prefWidth="434.0" text="Go to                                      and select a CSV file to upload." />
-                  <Label layoutX="95.0" layoutY="160.0" text="Menu &gt; File &gt; Open">
+                  <Label layoutX="172.0" layoutY="103.0" prefHeight="40.0" prefWidth="282.0" text="• The min score boundary being larger than the max score boundary" wrapText="true">
                      <font>
-                        <Font name="System Bold" size="13.0" />
+                        <Font size="14.0" />
+                     </font></Label>
+                  <Label layoutX="173.0" layoutY="153.0" prefHeight="26.0" prefWidth="270.0" text="• Either boundary being negative" wrapText="true">
+                     <font>
+                        <Font size="14.0" />
                      </font>
                   </Label>
+                  <ImageView fitHeight="119.0" fitWidth="120.0" layoutX="6.0" layoutY="25.0">
+                     <image>
+                        <Image url="@../../../Media/error.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" SplitPane.resizableWithParent="false">

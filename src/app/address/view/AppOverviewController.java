@@ -26,6 +26,10 @@ public class AppOverviewController
 
     @FXML
     private TextField peptideField;
+    @FXML
+    private TextField minScoreField;
+    @FXML
+    private TextField maxScoreField;
 
     // Reference to the main application.
     private MainApp mainApp;
@@ -70,6 +74,24 @@ public class AppOverviewController
         {
             mainApp.tableData.clear();
 
+            int minScore = 2;
+            int maxScore = Integer.MAX_VALUE;
+
+            if (!minScoreField.getText().trim().isEmpty())
+            {
+                minScore = Integer.parseInt(minScoreField.getText());
+            }
+
+            if (!maxScoreField.getText().trim().isEmpty())
+            {
+                maxScore = Integer.parseInt(maxScoreField.getText());
+            }
+
+            if (minScore > maxScore || minScore < 0 || maxScore < 0)
+            {
+                mainApp.showScoreErrorDialog();
+            }
+
             Peptide targetPeptide = new Peptide(peptideField.getText().toUpperCase());
 
             mainApp.matches = targetPeptide.findPotentialMatches(mainApp.getProteinList());
@@ -86,7 +108,7 @@ public class AppOverviewController
 
                 int score = p.getScore(LCS);
 
-                if (score >= 2)
+                if (score >= minScore && score <= maxScore)
                 {
                     mainApp.tableData.add(new Data(foundPeptide, targetPeptide.getPeptide(), list.get(0), list.get(1)));
                 }

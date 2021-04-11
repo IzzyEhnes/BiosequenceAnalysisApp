@@ -13,6 +13,7 @@ import app.address.model.Protein;
 import app.address.view.AppOverviewController;
 import app.address.view.FileReminderDialogController;
 import app.address.view.RootLayoutController;
+import app.address.view.ScoreErrorDialogController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -203,6 +204,49 @@ public class MainApp extends Application
 
             // Set the person into the controller.
             FileReminderDialogController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+
+            return controller.isOkClicked();
+
+        }
+
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+    /**
+     * This method displays a dialog window alerting the user that they've attempted to perform a search without first
+     * uploading a data file and that their search has failed.
+     *
+     * @return true if the the dialog is showing and false otherwise
+     */
+    public boolean showScoreErrorDialog()
+    {
+        try
+        {
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/ScoreErrorDialog.fxml"));
+            AnchorPane page = loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Score Boundary Error");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Set the person into the controller.
+            ScoreErrorDialogController controller = loader.getController();
             controller.setDialogStage(dialogStage);
 
             // Show the dialog and wait until the user closes it
