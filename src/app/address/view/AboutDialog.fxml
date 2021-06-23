@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="779.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.address.view.AboutDialogController">
+   <children>
+      <SplitPane dividerPositions="0.8640167364016736" layoutX="310.0" layoutY="225.0" orientation="VERTICAL" prefHeight="480.0" prefWidth="779.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <Label layoutX="25.0" layoutY="24.0" text="About">
+                     <font>
+                        <Font name="System Bold Italic" size="39.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="23.0" layoutY="-6.0" prefHeight="260.0" prefWidth="734.0" text="This application was developed by me, Izzy Ehnes, a California State University, Sacramento student studying computer science. It was built for William McAfee, a University of California, Davis student studying biochemistry and molecular biology. " wrapText="true">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="24.0" layoutY="91.0" prefHeight="260.0" prefWidth="740.0" text="William was researching peptides found in human breastmilk, looking for peptides that have the potential to be a universal antidepressant, and needed bespoke software to aid in his search." wrapText="true">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="24.0" layoutY="280.0" prefHeight="120.0" prefWidth="722.0" text="The source code for this program can be found at https://github.com/IzzyEhnes/BiosequenceAnalysisApp. This software is copyrighted, but as long as you credit me as the original developer and don't attempt to make a profit off of my work, feel free to fork the repository and make changes for your own use." wrapText="true">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <Button layoutX="651.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleOK" prefHeight="42.0" prefWidth="116.0" text="OK" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
