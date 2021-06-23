@@ -103,4 +103,26 @@ public class RootLayoutController
     {
         System.exit(0);
     }
+
+
+
+    /**
+     * Opens the how-to guide dialog
+     */
+    @FXML
+    private void handleHowToGuide()
+    {
+        mainApp.showHowToGuideDialog();
+    }
+
+
+
+    /**
+     * Opens the about dialog
+     */
+    @FXML
+    private void handleAbout()
+    {
+        mainApp.showAboutDialog();
+    }
 }
