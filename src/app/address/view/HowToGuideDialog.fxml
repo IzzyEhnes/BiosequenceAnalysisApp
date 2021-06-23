@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="779.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.address.view.HowToGuideDialogController">
+   <children>
+      <SplitPane dividerPositions="0.8640167364016736" layoutX="129.0" layoutY="58.0" orientation="VERTICAL" prefHeight="575.0" prefWidth="936.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="452.0" prefWidth="899.0">
+               <children>
+                  <Label layoutX="20.0" layoutY="-3.0" prefHeight="88.0" prefWidth="408.0" text="How-to guide">
+                     <font>
+                        <Font name="System Bold Italic" size="39.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="22.0" layoutY="59.0" prefHeight="77.0" prefWidth="757.0" text="1. Go to                        and select a .csv file containing a new protein on each line" wrapText="true">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="91.0" layoutY="87.0" prefHeight="21.0" prefWidth="130.0" text="File &gt; Open">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="23.0" layoutY="143.0" prefHeight="16.0" prefWidth="605.0" text="2. Enter the peptide you are searching for in the &quot;Enter peptide&quot; field">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="64.0" layoutY="176.0" prefHeight="21.0" prefWidth="567.0" text="• You can also add a min and/or max score to filter the results">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="23.0" layoutY="231.0" prefHeight="21.0" prefWidth="711.0" text="3. Click &quot;Search&quot; to populate the table with any matches that were found">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="24.0" layoutY="361.0" text="4. Either continue making other searches or exit using one of the &quot;Exit&quot; menu options">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="379.0" layoutY="255.0" prefHeight="51.0" prefWidth="137.0" text="File &gt; Save As">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="65.0" layoutY="271.0" prefHeight="21.0" prefWidth="711.0" text="• If you want to save the results, go to                             and select a save location">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="65.0" layoutY="303.0" prefHeight="20.0" prefWidth="711.0" text="• Click on a column once to sort the results in ascending order or twice for descending">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <Button layoutX="651.0" layoutY="11.0" mnemonicParsing="false" onAction="#handleOK" prefHeight="40.0" prefWidth="115.0" text="OK" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
