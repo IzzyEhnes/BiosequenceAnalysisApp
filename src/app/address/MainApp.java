@@ -267,8 +267,7 @@ public class MainApp extends Application
 
 
     /**
-     * This method displays a dialog window alerting the user that they've attempted to perform a search without first
-     * uploading a data file and that their search has failed.
+     * This method displays a dialog window containing how-to information.
      *
      * @return true if the the dialog is showing and false otherwise
      */
